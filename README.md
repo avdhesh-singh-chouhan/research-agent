@@ -26,7 +26,7 @@ Traditional business loan underwriting is:
 ## 🎯 Features
 
 - **Multi-Agent System**: 3 specialized agents working in parallel (Business Verifier, Financial Analyst, Risk Assessor)
-- **Real API Integration**: Live company research via Exa API + OpenCorporates verification
+- **Real API Integration**: Live company research via Exa API
 - **Real-Time Progress**: Server-Sent Events (SSE) streaming with live agent status updates
 - **Transparent Operations**: Each agent shows its role and data sources in real-time
 - **Beautiful UI**: React + Vite + TailwindCSS with smooth animations
@@ -40,20 +40,20 @@ Traditional business loan underwriting is:
 ### Agents
 
 1. **Business Verifier Agent**
-   - Searches Exa for company information
-   - Verifies business registration (OpenCorporates)
-   - Analyzes online presence and recent news
+   - Uses `searchCompany()` - Searches for company information
+   - Uses `searchNews()` - Analyzes recent news and reviews
+   - Evaluates business legitimacy from web presence
    - Returns legitimacy score (0-100)
 
 2. **Financial Analyst Agent**
+   - Uses `searchIndustryInfo()` - Researches industry benchmarks
    - Analyzes credit score, revenue, debt ratios
-   - Researches industry benchmarks via Exa
    - Compares business performance vs competitors
    - Identifies financial strengths and concerns
 
 3. **Risk Assessor Agent**
-   - Searches for lawsuits, complaints, red flags
-   - Analyzes industry-specific risks
+   - Uses `searchRisks()` - Searches for lawsuits, complaints, red flags
+   - Uses `searchIndustryInfo()` - Analyzes industry-specific risks
    - Evaluates market conditions and sentiment
    - Returns risk score and risk level
 
@@ -175,14 +175,14 @@ Each agent card shows **exactly what it's doing**:
 │    Analyzing...                          │
 │                                          │
 │ Role: Verifies business legitimacy      │
-│ Sources: Exa API • OpenCorporates       │
+│ Methods: searchCompany() • searchNews() │
 └─────────────────────────────────────────┘
 ```
 
-**Agent Roles & Data Sources:**
-- **Business Verifier**: Exa API • OpenCorporates • News & Reviews
-- **Financial Analyst**: Credit Data • Industry Benchmarks via Exa
-- **Risk Assessor**: Exa Search • Legal Records • Market Analysis
+**Agent Roles & Exa Methods:**
+- **Business Verifier**: `searchCompany()` • `searchNews()` • Company & News Analysis
+- **Financial Analyst**: `searchIndustryInfo()` • Industry Benchmarks & Trends
+- **Risk Assessor**: `searchRisks()` • `searchIndustryInfo()` • Risk & Industry Analysis
 
 ### Real-Time Progress Tracking
 - Visual status indicators (idle → started → analyzing → complete)
@@ -191,7 +191,7 @@ Each agent card shows **exactly what it's doing**:
 - Completion timestamps
 
 ### Comprehensive Results Display
-- **Business Verification**: Legitimacy score (0-100), registration status, online presence
+- **Business Verification**: Legitimacy score (0-100), web presence analysis, recent news
 - **Financial Analysis**: Credit assessment, strengths, concerns, industry comparison
 - **Risk Assessment**: Risk level, red flags, industry risks, sentiment analysis
 
@@ -248,6 +248,32 @@ research-agent/
 │   └── package.json
 └── README.md
 ```
+
+## 🔍 Exa API Integration
+
+### Service Methods
+
+The `ExaService` class provides 4 specialized search methods:
+
+1. **`searchCompany(businessName, location)`**
+   - Used by: Business Verifier Agent
+   - Searches for company information and web presence
+   - Returns: 3 results with 1000 characters each
+
+2. **`searchNews(businessName)`**
+   - Used by: Business Verifier Agent  
+   - Searches for recent news articles and reviews
+   - Returns: 5 results with 500 characters each
+
+3. **`searchIndustryInfo(industry)`**
+   - Used by: Financial Analyst Agent, Risk Assessor Agent
+   - Searches for industry trends, statistics, and benchmarks
+   - Returns: 3 results with 800 characters each
+
+4. **`searchRisks(businessName, industry)`**
+   - Used by: Risk Assessor Agent
+   - Searches for lawsuits, complaints, and risk factors
+   - Returns: 5 results with 500 characters each
 
 ## 🔑 API Endpoints
 
@@ -314,7 +340,7 @@ The system uses **Exa API for live research**, so you can analyze ANY real busin
 
 - Enter actual company names
 - Exa finds real website, news, reviews
-- Business Verifier matches data against public records
+- Business Verifier analyzes web presence and legitimacy
 - **Try**: Local restaurants, retail stores, service businesses
 
 ### Highlight Key Features
@@ -322,7 +348,7 @@ The system uses **Exa API for live research**, so you can analyze ANY real busin
 - **Parallel Execution**: All 3 agents work simultaneously (15-30 seconds)
 - **Real Data Sources**: Exa API searches, OpenCorporates verification
 - **Transparent**: See exactly what each agent is checking
-- **Fraud Detection**: System caught mismatched Accenture data (before fix)
+- **Web-Based Verification**: System analyzes online presence and news
 - **Scalability**: Handles $50K to $500M+ loans
 
 ## 🐛 Troubleshooting
