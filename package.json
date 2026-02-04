@@ -1,0 +1,14 @@
+{
+  "name": "agentlend",
+  "version": "1.0.0",
+  "description": "Multi-agent business lending platform using Claude Agent SDK",
+  "type": "module",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": ["claude", "agents", "underwriting", "ai", "exa"],
+  "author": "",
+  "license": "MIT"
+}
